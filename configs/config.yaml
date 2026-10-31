@@ -1,0 +1,14 @@
+range_accrual_contract:
+  lower_bound: 70.0
+  upper_bound: 90.0
+  notional: 100000.0
+  start_date: '2021-12-10'
+  end_date: '2022-01-18'
+  observation_step:
+    days: 1
+
+simulation: 
+  step:
+    days: 1
+  n_paths: 100
+  seed: 42

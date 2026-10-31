@@ -1,0 +1,40 @@
+[project]
+name = "stochastic-fx-pricing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Alexander Gladkov", email = "sasagladkov273@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.4.0",
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+stochastic-fx-pricing = "stochastic_fx_pricing:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+src = ["src"]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
