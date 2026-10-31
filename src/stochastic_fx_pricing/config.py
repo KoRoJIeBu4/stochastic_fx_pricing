@@ -21,6 +21,6 @@ def load_models() -> dict[str, RangeAccrualContract | SimulationConfig]:
         )
 
         return {
-            "RangeAccrualContract": range_accrual_contract,
-            "SimulationConfig": simulation_config,
+            "range_accrual_contract": range_accrual_contract,
+            "simulation_config": simulation_config,
         }
