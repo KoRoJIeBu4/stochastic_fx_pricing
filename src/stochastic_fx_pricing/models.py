@@ -6,8 +6,8 @@ import numpy as np
 
 @dataclass(frozen=True)
 class RangeAccrualContract:
-    lower_bound: float | None
-    upper_bound: float | None
+    lower_bound: float
+    upper_bound: float
     notional: float
     start_date: datetime
     end_date: datetime
@@ -27,21 +27,33 @@ class RangeAccrualContract:
                 "контракта должны быть положительной"
             )
         if (
-            self.lower_bound is not None
-            and self.upper_bound is not None
+            self.lower_bound != -float("inf")
+            and self.upper_bound != float("inf")
             and self.lower_bound > self.upper_bound
         ):
             raise ValueError("Нижняя граница должна быть не больше верхней")
-        if self.lower_bound is None and self.upper_bound is None:
+        if self.lower_bound == -float("inf") and self.upper_bound == float("inf"):
             raise ValueError("Нужно задать хотя бы одну границу")
+        if self.start_date + self.observation_step > self.end_date:
+            raise ValueError(
+                "За срок действия контракта нужно зафиксировать хотя бы одно состояние"
+            )
 
     @classmethod
     def from_config(cls, config: dict):
         info = config["range_accrual_contract"]
 
+        lower_bound = info.get("lower_bound", None)
+        if lower_bound is None:
+            lower_bound = -float("inf")
+
+        upper_bound = info.get("upper_bound", None)
+        if upper_bound is None:
+            upper_bound = float("inf")
+
         return cls(
-            lower_bound=info["lower_bound"],
-            upper_bound=info["upper_bound"],
+            lower_bound=lower_bound,
+            upper_bound=upper_bound,
             notional=info["notional"],
             start_date=datetime.fromisoformat(info["start_date"]),
             end_date=datetime.fromisoformat(info["end_date"]),
