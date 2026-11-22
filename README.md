@@ -1,1 +1,26 @@
-# stochastic_fx_pricing
+# Stochastic FX Pricing
+
+Проект по оценке стоимости валютного дериватива **Range Accrual** методом Монте-Карло. Работа включает моделирование траекторий процентных ставок RUB и USD, валютного курса USD/RUB и расчет приведенной стоимости выплат по деривативу.
+
+## 1. Установка проекта
+
+Клонировать репозиторий и перейти в его директорию:
+
+```bash
+git clone https://github.com/KoRoJIeBu4/stochastic_fx_pricing.git
+cd stochastic_fx_pricing
+```
+
+Установить зависимости:
+
+```bash
+uv sync --locked
+```
+
+## XXX. Источники
+
+- Для понимания моделирования мнгновенной процентной ставки вдохновлялся видео с [ютуб](https://www.youtube.com/watch?v=4pntpLikPN8&list=LL&index=1)
+
+- Динамика ставки [RUONIA](https://www.cbr.ru/hd_base/ruonia/dynamics/)
+- Динамика [EFFR](https://fred.stlouisfed.org/series/EFFR). И RUONIA и EFFR будут использоваться дальше для моделирования мнгновенных процентных ставок, т.к. оба показателя относятся к необеспеченному сегменту сделок и распространяются на однодневные операции
+- Динамика [обменного курса](https://www.finam.ru/quote/moex/usd000utstom/) с Финама
