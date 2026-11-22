@@ -1,7 +1,11 @@
+#TODO:
+# 1) Кол-во симуляций должно быть автоматически
+
+
 range_accrual_contract:
   lower_bound: 78.0
   upper_bound: 82.0
-  notional: 100000.0
+  notional: 100.0
   start_date: '2021-12-10 10:00:00'
   end_date: '2022-01-18 18:00:00'
   observation_step:
@@ -10,6 +14,6 @@ range_accrual_contract:
 simulation: 
   step:
     days: 1
-  n_trajectories: 10000
+  n_trajectories: 100000
   seed: 42
   max_plot_trajectories: 1000

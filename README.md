@@ -7,7 +7,7 @@
 Клонировать репозиторий и перейти в его директорию:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/KoRoJIeBu4/stochastic_fx_pricing.git
 cd stochastic_fx_pricing
 ```
 
@@ -17,7 +17,10 @@ cd stochastic_fx_pricing
 uv sync --locked
 ```
 
-И поставить хуки:
-```bash
-uv run pre-commit install
-```
+## XXX. Источники
+
+- Для понимания моделирования мнгновенной процентной ставки вдохновлялся видео с [ютуб](https://www.youtube.com/watch?v=4pntpLikPN8&list=LL&index=1)
+
+- Динамика ставки [RUONIA](https://www.cbr.ru/hd_base/ruonia/dynamics/)
+- Динамика [EFFR](https://fred.stlouisfed.org/series/EFFR). И RUONIA и EFFR будут использоваться дальше для моделирования мнгновенных процентных ставок, т.к. оба показателя относятся к необеспеченному сегменту сделок и распространяются на однодневные операции
+- Динамика [обменного курса](https://www.finam.ru/quote/moex/usd000utstom/) с Финама
