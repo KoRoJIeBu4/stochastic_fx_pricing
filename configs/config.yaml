@@ -1,6 +1,6 @@
 range_accrual_contract:
-  lower_bound: 10.0
-  upper_bound: 20.0
+  lower_bound: 70.0
+  upper_bound: 80.0
   notional: 100.0
   start_date: '2021-12-10 10:00:00'
   end_date: '2022-01-18 18:00:00'
