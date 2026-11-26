@@ -19,10 +19,17 @@ def plot_trajectories(
 
     rng = np.random.default_rng(seed)
 
-    for ax, (values, title, unit) in zip(axes, data, strict=False):
-        n = min(max_trajectories, values.shape[0])
-        indices = rng.choice(values.shape[0], n, replace=False)
+    n_paths = trajectories.fx_rates.shape[0]
 
+    n = min(max_trajectories, n_paths)
+
+    indices = rng.choice(
+        n_paths,
+        n,
+        replace=False,
+    )
+
+    for ax, (values, title, unit) in zip(axes, data, strict=False):
         mean = np.mean(values, axis=0)
 
         ax.plot(
