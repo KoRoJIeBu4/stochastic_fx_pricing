@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import Optional
 
 import numpy as np
 
@@ -65,7 +66,7 @@ class RangeAccrualContract:
 class SimulationConfig:
     step: timedelta
     n_trajectories: int
-    seed: int
+    seed: Optional[int]
     max_plot_trajectories: int
 
     def __post_init__(self):
@@ -109,3 +110,96 @@ class Trajectories:
             for t1, t2 in zip(self.timestamps, self.timestamps[1:], strict=False)
         ):
             raise ValueError("Временные метки должны строго возрастать")
+
+
+@dataclass(frozen=True)
+class CIRParams:
+    a: float
+    b: float
+    sigma: float
+    start_value: float
+
+    def __post_init__(self):
+        values = (
+            self.a,
+            self.b,
+            self.sigma,
+            self.start_value,
+        )
+
+        if any(value is None for value in values):
+            raise ValueError("Все значения в конфиге должны быть заполнены")
+
+        if self.sigma < 0 or self.start_value <= 0 or self.a <= 0 or self.b <= 0:
+            raise ValueError("Некорректные параметры")
+
+
+@dataclass(frozen=True)
+class FXParams:
+    lmbda: float
+    sigma: float
+    start_value: float
+
+    def __post_init__(self):
+        values = (
+            self.lmbda,
+            self.sigma,
+            self.start_value,
+        )
+
+        if any(value is None for value in values):
+            raise ValueError("Все значения в конфиге должны быть заполнены")
+
+        if self.sigma < 0 or self.start_value <= 0:
+            raise ValueError("Некорректные параметры")
+
+
+@dataclass(frozen=True)
+class MarketModelConfig:
+    rub_cir: CIRParams
+    usd_cir: CIRParams
+    fx: FXParams
+    corr: np.ndarray
+
+    @classmethod
+    def from_config(cls, config: dict):
+        market_models = config["market_models"]
+
+        rub_cir = CIRParams(**market_models["rub_cir"])
+        usd_cir = CIRParams(**market_models["usd_cir"])
+        fx = FXParams(**market_models["fx"])
+
+        # Будем придерживаться порядка [rub, usd, fx]
+        rub_fx = market_models["corr"]["rub_fx"]
+        rub_usd = market_models["corr"]["rub_usd"]
+        fx_usd = market_models["corr"]["fx_usd"]
+
+        corr = np.array(
+            [
+                [1, rub_usd, rub_fx],
+                [rub_usd, 1, fx_usd],
+                [rub_fx, fx_usd, 1],
+            ]
+        )
+
+        return cls(
+            rub_cir=rub_cir,
+            usd_cir=usd_cir,
+            fx=fx,
+            corr=corr,
+        )
+
+    def __post_init__(self):
+        matrix = np.array(
+            self.corr,
+            dtype=float,
+            copy=True,
+        )
+
+        if not np.all(np.isfinite(matrix)):
+            raise ValueError("Заполните корреляционную матрицу 3x3")
+
+        try:
+            np.linalg.cholesky(matrix)
+        except np.linalg.LinAlgError as error:
+            raise ValueError("Матрица должна быть положительно определённой") from error

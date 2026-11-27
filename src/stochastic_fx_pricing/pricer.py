@@ -4,6 +4,7 @@ import numpy as np
 
 from stochastic_fx_pricing.config import load_models
 from stochastic_fx_pricing.models import (
+    MarketModelConfig,
     RangeAccrualContract,
     SimulationConfig,
     Trajectories,
@@ -19,10 +20,12 @@ class Pricer:
             "range_accrual_contract"
         ]
         self.simulation_config: SimulationConfig = models["simulation_config"]
+        self.market_model_config: MarketModelConfig = models["market_model_config"]
 
         self.simulation = SDESimulation(
             range_accrual_contract=self.range_accrual_contract,
             simulation_config=self.simulation_config,
+            market_model_config=self.market_model_config,
         )
 
     def get_fair_price(self) -> float:

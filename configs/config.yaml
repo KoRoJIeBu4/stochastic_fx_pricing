@@ -1,10 +1,6 @@
-#TODO:
-# 1) Кол-во симуляций должно быть автоматически
-
-
 range_accrual_contract:
-  lower_bound: 78.0
-  upper_bound: 82.0
+  lower_bound: 10.0
+  upper_bound: 20.0
   notional: 100.0
   start_date: '2021-12-10 10:00:00'
   end_date: '2022-01-18 18:00:00'
@@ -14,6 +10,28 @@ range_accrual_contract:
 simulation: 
   step:
     days: 1
-  n_trajectories: 100000
-  seed: 42
+  n_trajectories: 10000
+  seed:
   max_plot_trajectories: 1000
+
+market_models:
+  rub_cir:
+    a: 1.449818
+    b: 0.056892
+    sigma: 0.110179
+    start_value: 0.07440000000000001
+  usd_cir:
+    a: 12.520048
+    b: 0.000796
+    sigma: 0.032214
+    start_value: 0.0008
+  fx:
+    lmbda: 0.0
+    sigma: 0.135845
+    start_value: 73.685
+  corr:
+    rub_fx: -0.025468
+    rub_usd: -0.003373
+    fx_usd: 0.014872
+
+
